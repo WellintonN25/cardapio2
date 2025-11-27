@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Saborosa Pensão</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍱</text></svg>">
+    
+</head>
+
+<body>
+
+    <header>
+        <h1>🍽️​ Saborosa Pensão</h1>
+        <p>Delivery & Retirada</p>
+    </header>
+
+    <div class="tabs-container">
+        <button class="tab-btn" data-category="comidas" onclick="mudarCategoria('comidas')">
+            🍽️​ Comidas
+        </button>
+        <button class="tab-btn" data-category="bebidas" onclick="mudarCategoria('bebidas')">
+            🥤 Bebidas
+        </button>
+    </div>
+
+    <div id="menu-items" class="menu-container"></div>
+
+    <div class="cart-bar" onclick="abrirCarrinho()">
+        <div style="display:flex; flex-direction:column;">
+            <span style="font-size:0.85rem; opacity:0.9">Total</span>
+            <span id="bar-total" style="font-weight:700; font-size:1.1rem">R$ 0,00</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px">
+            <span id="bar-count"
+                style="background:rgba(255,255,255,0.2); padding:5px 10px; border-radius:20px; font-size:0.9rem">0</span>
+            <span>Ver Sacola &rarr;</span>
+        </div>
+    </div>
+
+    <div id="modal-cart" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="margin:0">Seu Pedido</h3>
+                <button class="close-btn" onclick="fecharCarrinho()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div id="cart-list"></div>
+
+                <div class="form-section">
+                    <div class="form-title">Dados para Entrega</div>
+
+                    <div class="delivery-options">
+                        <div id="opt-retirada" class="delivery-option selected" onclick="selecionarEntrega(false)">
+                            Retirada</div>
+                        <div id="opt-entrega" class="delivery-option" onclick="selecionarEntrega(true)">Entrega</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Seu Nome *</label>
+                        <input type="text" id="input-nome" class="input-field" placeholder="Ex: João Silva">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Seu Telefone *</label>
+                        <input type="tel" id="input-telefone" class="input-field" placeholder="Ex: (11) 99999-9999">
+                    </div>
+
+                    <div id="div-endereco" class="input-group hidden">
+                        <label class="input-label">Endereço Completo *</label>
+                        <textarea id="input-endereco" class="input-field" rows="3"
+                            placeholder="Rua, Número, Bairro e Complemento"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; color:var(--gray)">
+                    <span>Subtotal</span>
+                    <span id="modal-subtotal">R$ 0,00</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; color:var(--gray)">
+                    <span>Taxa de Entrega</span>
+                    <span id="modal-frete">R$ 0,00</span>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; margin-bottom:20px; font-size:1.3rem; font-weight:bold;">
+                    <span>Total</span>
+                    <span id="modal-total-final">R$ 0,00</span>
+                </div>
+                <button class="whatsapp-btn" onclick="finalizarPedido()">Enviar Pedido no WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,406 @@
+        /* --- ESTILOS (CSS) --- */
+        :root {
+            --primary: #25D366;
+            --dark: #202124;
+            --gray: #5f6368;
+            --light: #f8f9fa;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            color: var(--dark);
+            padding-bottom: 100px;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* --- HEADER COM FUNDO DESFOCADO --- */
+        header {
+            /* Mantém o posicionamento que já existia */
+            position: sticky;
+            top: 0;
+            z-index: 80;
+
+            /* Ajustes visuais */
+            padding: 3rem 1rem;
+            /* Aumentei um pouco o espaço */
+            text-align: center;
+            overflow: hidden;
+            /* Essencial para o blur não vazar */
+            background-color: #333;
+            /* Cor de fundo caso a imagem falhe */
+        }
+
+        /* Camada da Imagem (Fundo) */
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            /* LINK DA IMAGEM ABAIXO */
+            background-image: url('https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+
+            /* O Efeito de Desfoque */
+            filter: blur(8px);
+            transform: scale(1.1);
+            /* Aumenta um pouco para evitar bordas brancas pelo blur */
+            z-index: -2;
+            /* Fica atrás de tudo */
+        }
+
+        /* Camada Escura (Para o texto ficar legível) */
+        header::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            /* 50% de preto sobre a imagem */
+            z-index: -1;
+            /* Fica entre a imagem e o texto */
+        }
+
+        /* Garante que o texto fique branco e sobre a imagem */
+        header h1,
+        header p {
+            position: relative;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            /* Sombra leve para leitura */
+            z-index: 1;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* ABAS (CORRIGIDO) */
+        .tabs-container {
+            display: flex;
+            background: white;
+            overflow-x: auto;
+            white-space: nowrap;
+            position: sticky;
+            top: 70px;
+            z-index: 70;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            background: none;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        /* A classe active agora é controlada precisamente pelo JS */
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background-color: rgba(37, 211, 102, 0.05);
+            /* Leve fundo verde */
+        }
+
+        /* GRID */
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* CARD */
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+
+        .product-info {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-title {
+            margin: 0 0 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .product-desc {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 16px;
+        }
+
+        .price-row {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .add-btn {
+            background-color: var(--dark);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* BARRA FLUTUANTE */
+        .cart-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 500px;
+            background-color: var(--dark);
+            color: white;
+            border-radius: 50px;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+            z-index: 100;
+            cursor: pointer;
+            margin-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 200;
+            align-items: flex-end;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            height: 95vh;
+            margin: 0 auto;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            background: #f0f0f0;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .remove-btn {
+            color: #d32f2f;
+            background: #fee;
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* FORMULARIO */
+        .form-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed #eee;
+        }
+
+        .form-title {
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: var(--gray);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .delivery-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .delivery-option {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray);
+            transition: all 0.2s;
+        }
+
+        .delivery-option.selected {
+            background-color: #e8f5e9;
+            border-color: var(--primary);
+            color: var(--secondary);
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            background: white;
+            padding-bottom: calc(20px + env(safe-area-inset-bottom));
+        }
+
+        .whatsapp-btn {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        @media(min-width: 768px) {
+            .modal-overlay {
+                align-items: center;
+                justify-content: center;
+            }
+
+            .modal-content {
+                height: auto;
+                max-height: 90vh;
+                border-radius: 20px;
+            }
+        }
