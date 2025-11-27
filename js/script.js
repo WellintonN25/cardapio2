@@ -238,7 +238,7 @@
 
             salvarDadosUsuario(nome, telefone, endereco);
 
-            const numeroWhatsApp = "5511999999999"; // COLOQUE SEU NÚMERO AQUI
+            const numeroWhatsApp = "5568992412833"; // COLOQUE SEU NÚMERO AQUI
             
             const subtotal = carrinho.reduce((acc, item) => acc + item.preco, 0);
             const custoFrete = isEntrega ? VALOR_FRETE : 0;
