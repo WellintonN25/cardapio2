@@ -220,54 +220,56 @@
         }
 
         // --- WHATSAPP ---
-        function finalizarPedido() {
-            if (carrinho.length === 0) { alert("Sua sacola está vazia!"); return; }
+function finalizarPedido() {
+    if (carrinho.length === 0) { alert("Sua sacola está vazia!"); return; }
 
-            const nome = document.getElementById('input-nome').value.trim();
-            const telefone = document.getElementById('input-telefone').value.trim();
-            const endereco = document.getElementById('input-endereco').value.trim();
+    const nome = document.getElementById('input-nome').value.trim();
+    const telefone = document.getElementById('input-telefone').value.trim();
+    const endereco = document.getElementById('input-endereco').value.trim();
 
-            if (!nome || !telefone) {
-                alert("Por favor, preencha seu Nome e Telefone.");
-                return;
-            }
-            if (isEntrega && !endereco) {
-                alert("Para entrega, precisamos do seu endereço.");
-                return;
-            }
+    if (!nome || !telefone) {
+        alert("Por favor, preencha seu Nome e Telefone.");
+        return;
+    }
+    if (isEntrega && !endereco) {
+        alert("Para entrega, precisamos do seu endereço.");
+        return;
+    }
 
-            salvarDadosUsuario(nome, telefone, endereco);
+    salvarDadosUsuario(nome, telefone, endereco);
 
-            const numeroWhatsApp = "5568992412833"; // COLOQUE SEU NÚMERO AQUI
-            
-            const subtotal = carrinho.reduce((acc, item) => acc + item.preco, 0);
-            const custoFrete = isEntrega ? VALOR_FRETE : 0;
-            const total = subtotal + custoFrete;
+    const numeroWhatsApp = "5511999999999"; // SEU NÚMERO AQUI
+    
+    const subtotal = carrinho.reduce((acc, item) => acc + item.preco, 0);
+    const custoFrete = isEntrega ? VALOR_FRETE : 0;
+    const total = subtotal + custoFrete;
 
-            let mensagem = `*NOVO PEDIDO DO SITE* 📋\n`;
-            mensagem += `Cliente: *${nome}*\n`;
-            mensagem += `Telefone: *${telefone}*\n`;
-            mensagem += `----------------------------\n`;
+    let mensagem = `*NOVO PEDIDO DO SITE* 📋\n`;
+    mensagem += `Cliente: *${nome}*\n`;
+    mensagem += `Telefone: *${telefone}*\n`;
+    mensagem += `----------------------------\n`;
 
-            const resumo = {};
-            carrinho.forEach(item => { resumo[item.nome] = (resumo[item.nome] || 0) + 1; });
-            for (const [nome, qtd] of Object.entries(resumo)) { mensagem += `${qtd}x ${nome}\n`; }
-            
-            mensagem += `----------------------------\n`;
-            mensagem += `Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
-            
-            if (isEntrega) {
-                mensagem += `Entrega: R$ ${custoFrete.toFixed(2).replace('.', ',')}\n`;
-                mensagem += `*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*\n`;
-                mensagem += `\n📍 *Endereço de Entrega:*\n${endereco}`;
-            } else {
-                mensagem += `Retirada no Balcão (Grátis)\n`;
-                mensagem += `*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
-            }
+    const resumo = {};
+    carrinho.forEach(item => { resumo[item.nome] = (resumo[item.nome] || 0) + 1; });
+    for (const [nome, qtd] of Object.entries(resumo)) { mensagem += `${qtd}x ${nome}\n`; }
+    
+    mensagem += `----------------------------\n`;
+    mensagem += `Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+    
+    if (isEntrega) {
+        mensagem += `Entrega: R$ ${custoFrete.toFixed(2).replace('.', ',')}\n`;
+        mensagem += `*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*\n`;
+        mensagem += `\n📍 *Endereço de Entrega:*\n${endereco}`;
+    } else {
+        mensagem += `Retirada no Balcão (Grátis)\n`;
+        mensagem += `*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
+    }
 
-            window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`, '_blank');
-        }
+    // Abre o WhatsApp
+    window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`, '_blank');
 
-        document.getElementById('modal-cart').addEventListener('click', function(e) {
-            if (e.target === this) fecharCarrinho();
-        });
+    // --- LIMPEZA DO CARRINHO (NOVO) ---
+    carrinho = [];            // 1. Zera a lista de produtos
+    atualizarBarraInferior(); // 2. Atualiza o total na barra para R$ 0,00
+    fecharCarrinho();         // 3. Fecha o modal automaticamente
+}
